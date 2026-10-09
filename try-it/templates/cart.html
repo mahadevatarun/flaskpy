@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6f8;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #e9ecef;
+        }
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .actions a, .actions button {
+            padding: 10px 15px;
+            text-decoration: none;
+        }
+        .shop {
+            background: #198754;
+            color: white;
+            border-radius: 4px;
+        }
+        .clear {
+            width: auto;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🛒 Your Shopping Cart</h1>
+
+    {% if cart %}
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, item in cart.items() %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.size }}</td>
+                <td>₹{{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.price * item.quantity }}</td>
+                <td>
+                    <form action="{{ url_for('remove_from_cart') }}"
+                          method="POST">
+                        <input type="hidden" name="key" value="{{ key }}">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Total: ₹{{ total }}</h2>
+
+    <div class="actions">
+        <a class="shop" href="{{ url_for('home') }}">Continue Shopping</a>
+
+        <form action="{{ url_for('clear_cart') }}" method="POST"
+              onsubmit="return confirm('Clear your entire cart?')">
+            <button class="clear" type="submit">Clear Cart</button>
+        </form>
+    </div>
+
+    {% else %}
+        <p>Your cart is empty.</p>
+        <a href="{{ url_for('home') }}">Go Shopping</a>
+    {% endif %}
+
+</body>
+</html>
