@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = "change-this-to-a-random-secret-key"
+app.secret_key = "FIRST FLASK PRO_Tarun"
 
 products = [
     {"id": 1, "name": "Book",
